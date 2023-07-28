@@ -23,12 +23,12 @@ app.use(fileUpload({
 const user = require('./routes/userRoute');
 const product = require('./routes/productRoute');
 const order = require('./routes/orderRoute');
-// const payment = require('./routes/paymentRoute');
+const payment = require('./routes/paymentRoute');
 
 app.use('/api/v1', user);
 app.use('/api/v1', product);
 app.use('/api/v1', order);
-// app.use('/api/v1', payment);s
+app.use('/api/v1', payment);
 
 // deployment
 __dirname = path.resolve();
@@ -45,6 +45,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // error middleware
-app.use(errorMiddleware);
+// app.use(errorMiddleware);
 
 module.exports = app;
