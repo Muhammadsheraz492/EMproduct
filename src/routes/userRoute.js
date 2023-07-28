@@ -3,6 +3,9 @@ const { registerUser, loginUser, logoutUser, getUserDetails, forgotPassword, res
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/user_actions/auth');
 
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single('avatar'); // 'avatar' should match the name attribute of the file input in the form
 
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);

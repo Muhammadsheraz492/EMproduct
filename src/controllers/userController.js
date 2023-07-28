@@ -5,30 +5,41 @@ const ErrorHandler = require('../utils/errorHandler');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single('avatar'); // 'avatar' should match the name attribute of the file input in the form
 
 // Register User
+
 exports.registerUser = asyncErrorHandler(async (req, res, next) => {
-
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-        folder: "avatars",
-        width: 150,
-        crop: "scale",
-    });
-
+  const file=req.files.avatar;
     const { name, email, gender, password } = req.body;
 
-    const user = await User.create({
-        name, 
-        email,
-        gender,
-        password,
-        avatar: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-        },
-    });
-
-    sendToken(user, 201, res);
+  try {
+    
+      const myCloud = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+          folder: "avatars",
+          width: 150,
+          crop: "scale",
+        });
+        
+            const user = await User.create({
+                name, 
+                email,
+                gender,
+                password,
+                avatar: {
+                    public_id: myCloud.public_id,  
+                    url: myCloud.secure_url,
+                },
+            });
+              console.log(myCloud.public_id);
+            sendToken(user, 201, res);
+  } catch (error) {
+    res.json(error);
+  }
+    
+//     console.log("Text");
 });
 
 // Login User
