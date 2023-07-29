@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
-const errorMiddleware = require('./middlewares/helpers/error');
+// const errorMiddleware = require('./middlewares/helpers/error');
 require("dotenv").config();
 // console.log(process.env.NODE_ENV);
 const app = express();
